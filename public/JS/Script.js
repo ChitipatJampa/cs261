@@ -34,25 +34,37 @@ document.addEventListener("DOMContentLoaded", function () {
   roleSelect.addEventListener("change", checkFields);
 });
 
-function submitLogin() {
+function submitLogin(event) {
+  event.preventDefault(); // Prevent the default form submission
+
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
-  fetch('/api/auth', {
+  const accessToken = "TUe0255672f1bbb086fb7b69e6223bd0df69a284b965180bb03b37dbbc52485b13a0774370730e671909c94a8d864c1449"; // your access token
+  const url = "https://restapi.tu.ac.th/api/v1/auth/Ad/verify";
+
+  fetch(url, {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}` // Add token to Authorization header
       },
       body: JSON.stringify({ username, password })
   })
-  .then(response => response.json())
-  .then(data => {
-      document.getElementById('message').innerText = data.message;
+  .then(response => {
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
   })
-  .catch(error => console.error('Error:', error));
+  .then(data => {
+      document.getElementById('message').innerText = data.message; // Show response message
+  })
+  .catch(error => {
+      document.getElementById('message').innerText = 'Login failed: ' + error.message; // Display error message
+      console.error('Error:', error);
+  });
 }
-
-
 
 function call_REST_API_Hello() {
   const username = document.getElementById('username').value;
@@ -60,11 +72,16 @@ function call_REST_API_Hello() {
 
   const url = (
       'http://localhost:8080/User?' +
-      new URLSearchParams({ myName: username, lastName: password}).toString()
-    );
+      new URLSearchParams({ myName: username, lastName: password }).toString()
+  );
   
   fetch(url)
-  .then(response => response.text())
+  .then(response => {
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+  })
   .then(text => {
       document.getElementById('message').innerText = text;
   })

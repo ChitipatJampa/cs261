@@ -15,7 +15,7 @@
     </div>
 
     <div class="container-form">
-      <form>
+      <form onsubmit="submitLogin(event)"> 
         <input
           type="text"
           id="username"
@@ -50,8 +50,9 @@
         </div>
 
         <input type="submit" value="LOGIN" id="loginButton" disabled />
-
       </form>
+
+      <div id="message" style="color: red;"></div>
     </div>
 
     <script src="js/main.js"></script>
