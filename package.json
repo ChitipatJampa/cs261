@@ -4,9 +4,13 @@
   "description": "Frontend of web App RequestForm",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "Chitipat",
   "license": "ISC",
-  "dependencies": {"express" : "^4.19.2"}
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "keywords": []
 }

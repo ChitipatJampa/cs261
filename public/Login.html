@@ -15,12 +15,12 @@
     </div>
 
     <div class="container-form">
-      <form>
+      <form onsubmit="submitLogin(event)">
         <input
           type="text"
           id="username"
           name="username"
-          placeholder=" Username"
+          placeholder="Username"
           required
         />
 
@@ -29,7 +29,7 @@
             type="password"
             id="password"
             name="password"
-            placeholder=" Password"
+            placeholder="Password"
             required
           />
           <img
@@ -45,15 +45,15 @@
             <option value="" disabled selected>Select Your Role</option>
             <option value="student">Student</option>
             <option value="teacher">Lecturer</option>
-            <option value="admin">Admin</option>
           </select>
         </div>
 
-        <input type="submit" value="LOGIN" id="loginButton" disabled />
-
+        <input type="submit" value="LOGIN" id="loginButton" />
       </form>
+
+      <div id="message" style="color: red;"></div>
     </div>
 
-    <script src="js/main.js"></script>
+    <script src="JS/Script.js"></script>
   </body>
 </html>
