@@ -13,10 +13,10 @@ app.get('/', (req, res) => {
 });
 
 // Login endpoint to handle user authentication
-app.post('/api/login', (req, res) => {
+app.post('/api/Login', (req, res) => {
     const { username, password } = req.body; // Get username and password from the request body
 
-    const accessToken = 'TUe0255672f1bbb086fb7b69e6223bd0df69a284b965180bb03b37dbbc52485b13a0774370730e671909c94a8d864c1449'; // Your access token
+    const accessToken = 'TU2809d38206a0c3cccf91f6c89a3ba3af180b309a12b23087c7b481c48f37c3ef501d2f1a2c73004fbe8a618341b5de66'; //my access token
 
     const options = {
         method: 'POST',
@@ -24,9 +24,9 @@ app.post('/api/login', (req, res) => {
         path: '/api/v1/auth/Ad/verify',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}` // Use Authorization header
+            'Application-Key': `${accessToken}` 
         }
-    };
+    };    
 
     // Create the HTTPS request
     const reqApi = https.request(options, (apiRes) => {
