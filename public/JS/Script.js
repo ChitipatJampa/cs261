@@ -19,15 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Function to check if all fields are filled
-  function checkFields() {
-    if (usernameInput.value && passwordInput.value && roleSelect.value) {
-      loginButton.disabled = false; // Enable button if all fields are filled
-    } else {
-      loginButton.disabled = true; // Disable button if any field is empty
-    }
-  }
-
   // Add event listeners to input fields and select
   usernameInput.addEventListener("input", checkFields);
   passwordInput.addEventListener("input", checkFields);
@@ -35,55 +26,42 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function submitLogin(event) {
-  event.preventDefault(); // Prevent the default form submission
+  event.preventDefault(); // Prevent the form from submitting normally
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-
-  const accessToken = "TUe0255672f1bbb086fb7b69e6223bd0df69a284b965180bb03b37dbbc52485b13a0774370730e671909c94a8d864c1449"; // your access token
-  const url = "https://restapi.tu.ac.th/api/v1/auth/Ad/verify";
-
-  fetch(url, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}` // Add token to Authorization header
-      },
-      body: JSON.stringify({ username, password })
+  fetch("/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }), // Send the username and password
   })
-  .then(response => {
-      if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-  })
-  .then(data => {
-      document.getElementById('message').innerText = data.message; // Show response message
-  })
-  .catch(error => {
-      document.getElementById('message').innerText = 'Login failed: ' + error.message; // Display error message
-      console.error('Error:', error);
-  });
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById("message").innerText =
+        data.response || "Login failed.";
+    })
+    .catch((error) => console.error("Error:", error));
 }
 
 function call_REST_API_Hello() {
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
-  const url = (
-      'http://localhost:8080/User?' +
-      new URLSearchParams({ myName: username, lastName: password }).toString()
-  );
-  
+  const url =
+    "http://localhost:8080/User?" +
+    new URLSearchParams({ myName: username, lastName: password }).toString();
+
   fetch(url)
-  .then(response => {
+    .then((response) => {
       if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
       return response.text();
-  })
-  .then(text => {
-      document.getElementById('message').innerText = text;
-  })
-  .catch(error => console.error('Error:', error));
+    })
+    .then((text) => {
+      document.getElementById("message").innerText = text;
+    })
+    .catch((error) => console.error("Error:", error));
 }
