@@ -13,10 +13,10 @@ app.get('/', (req, res) => {
 });
 
 // Login endpoint to handle user authentication
-app.post('/api/Login', (req, res) => {
+app.post('/api/login', (req, res) => {
     const { username, password } = req.body; // Get username and password from the request body
 
-    const accessToken = 'TU2809d38206a0c3cccf91f6c89a3ba3af180b309a12b23087c7b481c48f37c3ef501d2f1a2c73004fbe8a618341b5de66'; //my access token
+    const accessToken = 'TU339d2e1ee4f2a55d9cc7704722e4a616e1652040e387aa40f406d83ed202ffdb23461f13e44bffc0aa5b315ce7ecfa53'; //my access token
 
     const options = {
         method: 'POST',
