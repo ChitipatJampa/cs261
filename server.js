@@ -14,9 +14,9 @@ app.get('/', (req, res) => {
 
 // Login endpoint to handle user authentication
 app.post('/api/login', (req, res) => {
-    const { username, password } = req.body; // Get username and password from the request body
+    const { UserName, PassWord } = req.body; // Get username and password from the request body
 
-    const accessToken = 'TU339d2e1ee4f2a55d9cc7704722e4a616e1652040e387aa40f406d83ed202ffdb23461f13e44bffc0aa5b315ce7ecfa53'; //my access token
+    const accessToken = 'TU339d2e1ee4f2a55d9cc7704722e4a616e1652040e387aa40f406d83ed202ffdb23461f13e44bffc0aa5b315ce7ecfa53'; // Your access token
 
     const options = {
         method: 'POST',
@@ -24,7 +24,7 @@ app.post('/api/login', (req, res) => {
         path: '/api/v1/auth/Ad/verify',
         headers: {
             'Content-Type': 'application/json',
-            'Application-Key': `${accessToken}` 
+            'Application-Key': accessToken
         }
     };    
 
@@ -38,7 +38,21 @@ app.post('/api/login', (req, res) => {
 
         apiRes.on('end', () => {
             const body = Buffer.concat(chunks);
-            res.json({ response: body.toString() }); // Send API response back to client
+            const jsonResponse = JSON.parse(body.toString()); // Parse JSON response from API
+            
+            // Send a structured response back to the client
+            if (jsonResponse.status) {
+                res.json({
+                    username: jsonResponse.username,
+                    displayNameTH: jsonResponse.displayname_th,
+                    displayNameEN: jsonResponse.displayname_en,
+                    email: jsonResponse.email,
+                    department: jsonResponse.department,
+                    faculty: jsonResponse.faculty,
+                });
+            } else {
+                res.json({ error: jsonResponse.message || "Login failed." });
+            }
         });
 
         apiRes.on('error', (error) => {
@@ -49,8 +63,8 @@ app.post('/api/login', (req, res) => {
 
     // Construct postData with the actual username and password
     const postData = JSON.stringify({
-        UserName: username,
-        PassWord: password
+        UserName: UserName,
+        PassWord: PassWord
     });
 
     reqApi.write(postData);

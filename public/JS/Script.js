@@ -9,11 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     passwordInput.setAttribute("type", type);
 
     // Change the icon based on the input type
-    if (type === "text") {
-      togglePassword.src = "img/open-eyes.jpg"; // Change to the icon for hiding password
-    } else {
-      togglePassword.src = "img/closed-eyes.jpg"; // Change to the icon for showing password
-    }
+    togglePassword.src = type === "text" ? "img/open-eyes.jpg" : "img/closed-eyes.jpg";
   });
 });
 
@@ -27,13 +23,25 @@ function submitLogin(event) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password }), // Send the username and password
+    body: JSON.stringify({ UserName: username, PassWord: password }), // Send the username and password
   })
     .then((response) => response.json())
     .then((data) => {
-      document.getElementById("message").innerText =
-        data.response || "Login failed.";
+      const messageElement = document.getElementById("message");
+      if (data.error) {
+        messageElement.innerText = data.error; // Display error message
+      } else {
+        // Display user information
+        messageElement.innerHTML = `
+          <strong>Login Successful!</strong><br>
+          Name (TH): ${data.displayNameTH}<br>
+          Name (EN): ${data.displayNameEN}<br>
+          Username: ${data.username}<br>
+          Email: ${data.email}<br>
+          Department: ${data.department}<br>
+          Faculty: ${data.faculty}
+        `;
+      }
     })
     .catch((error) => console.error("Error:", error));
 }
-
